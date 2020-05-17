@@ -46,7 +46,7 @@ declare namespace CameraRoll {
     /**
      * Earliest time to get photos from. A timestamp in milliseconds. Exclusive.
      */
-    fromTime?: number,
+    fromTime?: number;
 
     /**
      * Latest time to get photos from. A timestamp in milliseconds. Inclusive.
@@ -81,38 +81,38 @@ declare namespace CameraRoll {
      * If provided, it's OK for the output to have empty filenames. This can
      * improve performance on iOS when used by `getPhotosFast`.
      */
-    allowEmptyFilenames?: boolean,
+    skipGettingFilenames?: boolean;
   }
 
   interface PhotoIdentifier {
     node: {
-      type: string,
-      group_name: string,
+      type: string;
+      group_name: string;
       image: {
-        filename: string,
-        uri: string,
-        height: number,
-        width: number,
-        isStored?: boolean,
-        playableDuration: number,
-      },
-      timestamp: number,
+        filename: string;
+        uri: string;
+        height: number;
+        width: number;
+        isStored?: boolean;
+        playableDuration: number;
+      };
+      timestamp: number;
       location?: {
-        latitude?: number,
-        longitude?: number,
-        altitude?: number,
-        heading?: number,
-        speed?: number,
-      },
+        latitude?: number;
+        longitude?: number;
+        altitude?: number;
+        heading?: number;
+        speed?: number;
+      };
     };
   }
 
   interface PhotoIdentifiersPage {
     edges: Array<PhotoIdentifier>;
     page_info: {
-      has_next_page: boolean,
-      start_cursor?: string,
-      end_cursor?: string,
+      has_next_page: boolean;
+      start_cursor?: string;
+      end_cursor?: string;
     };
   }
 
@@ -126,48 +126,56 @@ declare namespace CameraRoll {
   }
 
   type SaveToCameraRollOptions = {
-    type?: 'photo' | 'video' | 'auto',
-    album?: string,
+    type?: 'photo' | 'video' | 'auto';
+    album?: string;
   };
 
-    /**
-     * `CameraRoll.saveImageWithTag()` is deprecated. Use `CameraRoll.saveToCameraRoll()` instead.
-     */
-    function saveImageWithTag(tag: string): Promise<string>;
+  /**
+   * `CameraRoll.saveImageWithTag()` is deprecated. Use `CameraRoll.saveToCameraRoll()` instead.
+   */
+  function saveImageWithTag(tag: string): Promise<string>;
 
-    /**
-     * Delete a photo from the camera roll or media library. photoUris is an array of photo uri's.
-     */
-    function deletePhotos(photoUris: Array<string>): Promise<boolean>;
-    
-    /**
-     * Saves the photo or video to the camera roll or photo library.
-     */
-    function saveToCameraRoll(tag: string, type?: 'photo' | 'video'): Promise<string>;
+  /**
+   * Delete a photo from the camera roll or media library. photoUris is an array of photo uri's.
+   */
+  function deletePhotos(photoUris: Array<string>): Promise<boolean>;
 
-    /**
-     * Saves the photo or video to the camera roll or photo library.
-     */
-    function save(tag: string, options?: SaveToCameraRollOptions): Promise<string> 
+  /**
+   * Saves the photo or video to the camera roll or photo library.
+   */
+  function saveToCameraRoll(
+    tag: string,
+    type?: 'photo' | 'video',
+  ): Promise<string>;
 
-    /**
-     * Returns a Promise with photo identifier objects from the local camera
-     * roll of the device matching shape defined by `getPhotosReturnChecker`.
-     */
-    function getPhotos(params: GetPhotosParams): Promise<PhotoIdentifiersPage>;
+  /**
+   * Saves the photo or video to the camera roll or photo library.
+   */
+  function save(
+    tag: string,
+    options?: SaveToCameraRollOptions,
+  ): Promise<string>;
 
-    /**
-     * Returns a Promise with photo identifier objects from the local camera
-     * roll of the device matching shape defined by `getPhotosReturnChecker`.
-     *
-     * This is the same as `getPhotos` on Android, but is much faster on iOS.
-     * For 1000 photos, it can save 4.8 out of 5 seconds. It does this by
-     * not using cursor and mimetype filters, and by omitting the filename in
-     * the returned object.
-     */
-    function getPhotosFast(params: GetPhotosFastParams): Promise<PhotoIdentifiersPage>;
+  /**
+   * Returns a Promise with photo identifier objects from the local camera
+   * roll of the device matching shape defined by `getPhotosReturnChecker`.
+   */
+  function getPhotos(params: GetPhotosParams): Promise<PhotoIdentifiersPage>;
 
-    function getAlbums(params: GetAlbumsParams): Promise<Album[]>;
+  /**
+   * Returns a Promise with photo identifier objects from the local camera
+   * roll of the device matching shape defined by `getPhotosReturnChecker`.
+   *
+   * This is the same as `getPhotos` on Android, but is much faster on iOS.
+   * For 1000 photos, it can save 4.8 out of 5 seconds. It does this by
+   * not using cursor and mimetype filters, and by omitting the filename in
+   * the returned object.
+   */
+  function getPhotosFast(
+    params: GetPhotosFastParams,
+  ): Promise<PhotoIdentifiersPage>;
+
+  function getAlbums(params: GetAlbumsParams): Promise<Album[]>;
 }
 
 export = CameraRoll;
